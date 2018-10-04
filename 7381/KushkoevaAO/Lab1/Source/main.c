@@ -12,8 +12,9 @@
 #include <ctype.h>
 
 void error(int i, int deep) {
-        for(int i = 0; i <= deep; i++)
+        for(int i = 0; i <= deep; i++) {
                 printf(" ");
+	}
 
 	printf("ERROR: ");
 
@@ -36,40 +37,49 @@ void error(int i, int deep) {
 
 
 int check_next(char* str, int deep) {
-	if( str[deep] == '\0' ) {
+	if(str[deep] == '\0') {
 		error(2, deep);
 		return 0;
 	}
-	else { return 1; }
+	else {
+		return 1;
+	}
 }
 
 int analiz(char* str, int deep) {
 	int flag = 1;
 
-        if(str[deep] == '\0') { return 1; }					//завершение рекурсии в случае константного выражения
+        if(str[deep] == '\0') {                //завершение рекурсии в случае константного выражения
+		return 1;
+	}
 
-	for(int i = 0; i < deep; i++)						//отступ для удобного просмотра результата программы
+	for(int i = 0; i < deep; i++) {						//отступ для удобного просмотра результата программы
 		printf(" ");
+	}
 
 	printf(">The incoming character: %c", str[deep]);
 
-	if(!isdigit(str[0])){ 							//проверка корректности первого элемента выражения
+	if(!isdigit(str[0])) { 							//проверка корректности первого элемента выражения
 		printf("\n");
 		error(1, deep);
 		printf("<\n");
 		return 0;
 	}
 
-	if( isdigit(str[deep]) ) {
+	if(isdigit(str[deep])) {
 		printf("\n");
-		if( !analiz(str, deep+1) ) { flag = 0; }
+		if(!analiz(str, deep+1)) {
+			flag = 0;
+		}
 	}
 	else {
-		if( str[deep] == '+'|| str[deep] == '-' || str[deep] == '*' ) {
+		if(str[deep] == '+'|| str[deep] == '-' || str[deep] == '*') {
 			printf("   \\\\ Waiting for a series of numbers.\n");
 
-			if( check_next(str, deep+1) ) {
-				if( !analiz(str, deep+1) ) { flag = 0; }
+			if(check_next(str, deep+1)) {
+				if( !analiz(str, deep+1) ) {
+					flag = 0;
+				}
 			}
 
 			else {
@@ -85,22 +95,29 @@ int analiz(char* str, int deep) {
 		}
 	}
 
-	for(int i = 0; i < deep; i++)						//отступ для удобного просмотра результата программы
+	for(int i = 0; i < deep; i++) {						//отступ для удобного просмотра результата программы
 		printf(" ");
+	}
 
 	printf("<\n");
 
-	if( flag ) { return 1; }
-	else { return 0; }
+	if(flag) {
+		 return 1;
+	}
+	else {
+		return 0;
+	}
 }
 
 int main() {
         int len_str = 100;
         char* str = (char*)malloc(sizeof(char)*len_str);
 
+	printf("Enter the name of a file, which contains the expression, or just enter the expression right here: ");
+
 	scanf("%s", str);
 
-	if ( strstr(str, ".txt") ) {
+	if (strstr(str, ".txt")) {
 		FILE* file = fopen(str, "r");
 
 		if (!file) {
@@ -112,18 +129,21 @@ int main() {
 
 		fgets(str, len_str, file);
 
-		if ( str[strlen(str)-1] == '\n' )
+		if (str[strlen(str)-1] == '\n') {
 			str[strlen(str)-1] = '\0';
+		}
 
 		fclose(file);
 	}
 
 	printf("Constant expression analyzer:\n");
 
-	if( analiz(str, 0) )
+	if(analiz(str, 0)) {
 		 printf("It's a constant expression!\n");
-	else
+	}
+	else {
 		printf("It's not a constant expression!\n");
+	}
 
 	return 0;
 }
