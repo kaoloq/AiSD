@@ -20,6 +20,7 @@ int main() {
 	write_lisp(s2);
 	cout << endl;
 	cout << "Freeing memory: " << endl;
+	destroy(s1);
 	destroy(s2);
 	cout << "End!" << endl;
 	return 0;
@@ -70,7 +71,7 @@ namespace h_list {
 			exit(1);
 		}
 	}
-	bool isAtom(const lisp s) {						//функция проверяет атомарен ли спискок
+	bool isAtom(const lisp s) {						//функция проверяет атомарен ли список
 		if (s == NULL) return false;
 		else return (s->test);
 	}
